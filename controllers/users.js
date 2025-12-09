@@ -101,17 +101,17 @@ exports.userCart = async (req, res) => {
         }
 
 
-        await prisma.productonCart.deleteMany({
+        await prisma.productOnCart.deleteMany({
             where: {
                 cart: {
-                    orderById: user.id
+                    orderedById: user.id
                 }
             }
         })
 
         await prisma.cart.deleteMany({
 
-            where: { orderById: user.id }
+            where: { orderedById: user.id }
         })
 
         // เตรียมสินค้า
@@ -133,7 +133,7 @@ exports.userCart = async (req, res) => {
                     create: products
                 },
                 cartTotal: cartTotal,
-                orderById: user.id
+                orderedById: user.id
             }
         })
 
@@ -141,6 +141,7 @@ exports.userCart = async (req, res) => {
         res.send('Add cart Success')
 
     } catch (error) {
+        console.error('❌ CART ERROR:', error)
         console.error
         res.status(500).json({ message: 'Server Error' })
 
@@ -155,7 +156,7 @@ exports.getUserCart = async (req, res) => {
 
             where: {
 
-                orderById: Number(req.user.id)
+                orderedById: Number(req.user.id)
             },
             include: {
                 products: {
@@ -185,7 +186,7 @@ exports.emptyCart = async (req, res) => {
 
         const cart = await prisma.cart.findFirst({
 
-            where: { orderById: Number(req.user.id) }
+            where: { orderedById: Number(req.user.id) }
 
         })
 
@@ -193,14 +194,14 @@ exports.emptyCart = async (req, res) => {
             return res.status(400).json({ message: 'No cart' })
         }
 
-        await prisma.productonCart.deleteMany({
+        await prisma.productOnCart.deleteMany({
 
             where: { cartId: cart.id }
         })
 
         const result = await prisma.cart.deleteMany({
 
-            where: { orderById: Number(req.user.id) }
+            where: { orderedById: Number(req.user.id) }
         })
 
         console.log(result)
@@ -253,7 +254,7 @@ exports.saveOrder = async (req, res) => {
         // get user cart
         const userCart = await prisma.cart.findFirst({
             where: {
-                orderById: Number(req.user.id)
+                orderedById: Number(req.user.id)
             },
             include: { products: true }
         })
@@ -281,7 +282,7 @@ exports.saveOrder = async (req, res) => {
                         price: item.price
                     }))
                 },
-                oderdBy: {
+                orderedBy: {
                     connect: { id: req.user.id }
                 },
 
@@ -313,7 +314,7 @@ exports.saveOrder = async (req, res) => {
 
         await prisma.cart.deleteMany({
 
-            where: { orderById: Number(req.user.id) }
+            where: { orderedById: Number(req.user.id) }
         })
 
         res.json({ ok: true, order })
@@ -332,7 +333,7 @@ exports.getOrder = async (req, res) => {
     try {
 
         const orders = await prisma.order.findMany({
-            where: { orderdById: Number(req.user.id) },
+            where: { orderedById: Number(req.user.id) },
             include: {
                 products: {
                     include: {
@@ -349,7 +350,7 @@ exports.getOrder = async (req, res) => {
         res.json({ orders })
 
     } catch (error) {
-        console.error
+        console.log('Getorder', error)
         res.status(500).json({ message: 'Server Error' })
 
     }

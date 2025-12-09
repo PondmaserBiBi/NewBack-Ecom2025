@@ -1,8 +1,10 @@
+// Step 1 import ....
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
 const { readdirSync } = require('fs')
 const cors = require('cors')
+
 
 
 // middleware
@@ -11,10 +13,19 @@ app.use(express.json({ limit: '20mb' }))
 app.use(cors())
 
 
-readdirSync('./routes').map((c) => app.use('/', require('./routes/' + c)))
+
+readdirSync('./routes')
+    .map((c) => app.use('/', require('./routes/' + c)))
 
 
-// start sever
+
+
+
+
+
+
+//  Start Server
 app.listen(5000,
-    () => console.log('Server is runing on port 5000')
-)
+    () => console.log('Server is running on port 5000'))
+
+

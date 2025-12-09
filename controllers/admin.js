@@ -32,7 +32,7 @@ exports.getOrderAdmin = async (req, res) => {
                         product: true
                     }
                 },
-                oderdBy: {
+                orderedBy: {
                     select: {
                         id: true,
                         email: true,

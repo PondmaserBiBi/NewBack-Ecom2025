@@ -1,5 +1,5 @@
 const prisma = require("../config/prisma")
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require('stripe')('sk_test_51SbHXGGfmYSUd3hAPc1APxxMpNqe2ezLaKZP3HjQrL2kbtsfZ6DP21iNlzUoLr3F01WRapmdrNswWbNyGSCaqqqB00iUGn2D3j');
 
 
 exports.payment = async (req, res) => {
@@ -10,7 +10,7 @@ exports.payment = async (req, res) => {
 
             where: {
 
-                orderById: req.user.id
+                orderedById: req.user.id
             }
 
         })

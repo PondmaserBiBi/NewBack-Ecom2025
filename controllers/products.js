@@ -48,7 +48,9 @@ exports.list = async (req, res) => {
             }
         })
         res.send(products)
+
     } catch (error) {
+
 
         console.error(error)
         res.status(500).json({ message: "Server Error" })
@@ -196,10 +198,10 @@ exports.listBy = async (req, res) => {
             }
         })
 
-
-
         res.send(products)
     } catch (error) {
+
+        console.error("Prisma error:",error);
 
         console.error(error)
         res.status(500).json({ message: "Server Error" })
